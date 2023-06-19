@@ -1,0 +1,44 @@
+{% macro obj(data) -%}
+    <div style="border: 1px solid black; padding: 5px; " id="{{ data.id }}">
+        {% for f in data.keys() %}
+            {% if f in ["next", "inReplyTo", "outbox", "actor"] and data[f] %}
+                {{ f }}: <a id="{{ data[f] }}">{{ data[f] }}</a><br/>
+            {% endif %}
+            {% if f in ["first", "replies"] and data[f] %}
+                {{ obj(data[f]) }}<br/>
+            {% endif %}
+            {% if f in ["name"] and data[f] %}
+                &lt;{{ f }}&gt;{{ data[f] }}<br/>
+            {% endif %}
+            {% if "toplevel" in data and f in ["content"] and data[f] %}
+                &lt;{{ f }}&gt;{{ data[f] }}<br/>
+            {% endif %}
+        {% endfor %}
+        {% if "cc" in data and data.cc %}
+            {{ obj({"items": data.cc}) }}<br/>
+        {% endif %}
+
+        {% if "orderedItems" in data %}
+            {% for item in data["orderedItems"] %}
+                {% if "object" in item.keys() %}
+                    {{ obj(item["object"]) }}
+                {% endif %}
+            {% endfor %}
+        {% elif "items" in data.keys() %}
+            {% for item in data["items"] %}
+                <a id="{{ item }}">{{ item }}</a><br/>
+            {% endfor %}
+        {% else %}
+            {% if "object" in data %}
+                {{ obj(data.get("object", {})) }}
+            {% endif %}
+        {% endif %}
+    </div>
+{%- endmacro -%}
+
+
+<div>
+{% if data %}
+    {{ obj(data) }}
+{% endif %}
+</div>

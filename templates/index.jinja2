@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UFO</title>
+    <script type="text/javascript">
+        async function load() {
+            const search = document.getElementById('search').value;
+            pywebview.api.search(search);
+            history.pushState({search: search}, search);
+
+            document.getElementById("output").innerHTML = await pywebview.api.load();
+        }
+
+        function clicked(e) {
+            document.getElementById('search').value = e.target.id;
+            load();
+        }
+
+        function loaded() {
+            document.getElementById("output").onclick = clicked;
+            window.onpopstate = (e) => {
+                console.log(e);
+                document.getElementById('search').value = e.state.search;
+                load();
+            };
+        }
+    </script>
+</head>
+<body onload="loaded()">
+    <h1>UFO</h1>
+    <p>... is the unified fediverse observer.</p><br/>
+    <button id="abortButton" onclick="pywebview.api.abort()">Abort</button>
+    <br/>
+    <br/>
+    <label for="search"></label>
+    <input type="text" id="search"
+           placeholder="Search for a user or instance..."
+           value="https://beehaw.org/c/programming/outbox" />
+    <button id="loadButton" onclick="load()">Load</button>
+    <br/>
+    <br/>
+    <div id="output"></div>
+</body>
+</html>
