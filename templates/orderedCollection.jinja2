@@ -1,0 +1,8 @@
+<div id="{{ data.id }}" style="border: 1px solid black; padding: 5px; ">
+    <div id="{{ data.id }}">{{ data.type }}:{{ data.id }}</div>
+    <ul>
+    {% for item in data.children %}
+        <li id="{{ item.id }}">{{ item }}</li>
+    {% endfor %}
+    </ul>
+</div>

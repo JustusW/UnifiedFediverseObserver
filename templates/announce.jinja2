@@ -1,0 +1,15 @@
+<div id="{{ data.id }}" style="border: 1px solid black; padding: 5px; ">
+    <div id="{{ data.id }}">{{ data.type }}:{{ data.id }}</div>
+    <div id="{{ data.actor }}">Actor: {{ data.actor }}</div>
+    {% for k in data.data.keys() %}
+        {% if k in ['to', 'cc'] %}
+            {{ k }}:
+            <ul>
+            {% for item in data[k] %}
+                <li id="{{ item }}">{{ item }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+    {{ data.object }}
+</div>

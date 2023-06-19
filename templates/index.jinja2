@@ -8,8 +8,15 @@
             const search = document.getElementById('search').value;
             pywebview.api.search(search);
             history.pushState({search: search}, search);
+            document.getElementById("error").innerHTML = "";
 
-            document.getElementById("output").innerHTML = await pywebview.api.load();
+            let response = await pywebview.api.load();
+            console.log(response);
+            if (response.failure) {
+                document.getElementById("error").innerHTML = response.failure;
+                return;
+            }
+            document.getElementById("output").innerHTML = response;
         }
 
         function clicked(e) {
@@ -18,6 +25,9 @@
         }
 
         function loaded() {
+            const search = document.getElementById('search').value;
+            history.pushState({search: "search"}, search);
+
             document.getElementById("output").onclick = clicked;
             window.onpopstate = (e) => {
                 console.log(e);
@@ -40,6 +50,7 @@
     <button id="loadButton" onclick="load()">Load</button>
     <br/>
     <br/>
+    <div id="error" style="color: darkred; "></div>
     <div id="output"></div>
 </body>
 </html>
