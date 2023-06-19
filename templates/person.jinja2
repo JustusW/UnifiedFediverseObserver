@@ -1,0 +1,7 @@
+{% extends "base.jinja2" %}
+{% block content %}
+    <div id="{{ data.outbox }}">outbox: {{ data.outbox }}</div>
+    <div id="{{ data.following }}">following: {{ data.following }}</div>
+    <div id="{{ data.followers }}">followers: {{ data.followers }}</div>
+{{ data.data }}
+{% endblock %}

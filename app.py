@@ -38,10 +38,10 @@ class JSApi:
         try:
             r = Requester(self.target)
             app.app_context().push()
-            data = r.load()
-            return render_template('entity.jinja2', data=data)
+            return str(r.load())
         except Exception as e:
-            return {"failure": str(e)}
+            raise e
+            # return {"failure": str(e)}
 
     def search(self, searchString):
         self.target = searchString

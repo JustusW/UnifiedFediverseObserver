@@ -1,5 +1,5 @@
-<div id="{{ data.id }}" style="border: 1px solid black; padding: 5px; ">
-    <div id="{{ data.id }}">{{ data.type }}:{{ data.id }}</div>
+{% extends "base.jinja2" %}
+{% block content %}
     <div id="{{ data.actor }}">Actor: {{ data.actor }}</div>
     {% for k in data.data.keys() %}
         {% if k in ['to', 'cc'] %}
@@ -12,4 +12,4 @@
         {% endif %}
     {% endfor %}
     {{ data.object }}
-</div>
+{% endblock %}

@@ -1,3 +1,11 @@
-<div id="{{ data.id }}" style="border: 1px solid black; padding: 5px; ">
-    <div id="{{ data.id }}">{{ data.type }}:{{ data.id }}</div>
-</div>
+{% extends "base.jinja2" %}
+{% block content %}
+    <div id="{{ data.actor }}">Actor: {{ data.actor }}</div>
+    <div id="{{ data.attributedTo }}">attributedTo: {{ data.attributedTo }}</div>
+    <div id="{{ data.conversation }}">conversation: {{ data.conversation }}</div>
+    <div id="{{ data.inReplyTo }}">inReplyTo: {{ data.inReplyTo }}</div>
+    <div>
+        {{ data.content }}
+    </div>
+    <div>{{ data.replies }}</div>
+{% endblock %}

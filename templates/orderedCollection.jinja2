@@ -1,8 +1,14 @@
-<div id="{{ data.id }}" style="border: 1px solid black; padding: 5px; ">
-    <div id="{{ data.id }}">{{ data.type }}:{{ data.id }}</div>
+{% extends "collection.jinja2" %}
+{% block content %}
+    <div id="{{ data.first }}">{{ data.first }}</div>
+    <div id="{{ data.last }}">{{ data.last }}</div>
     <ul>
     {% for item in data.children %}
+        {% if item is string  %}
+        <li id="{{ item }}">{{ item }}</li>
+        {% else %}
         <li id="{{ item.id }}">{{ item }}</li>
+        {% endif %}
     {% endfor %}
     </ul>
-</div>
+{% endblock %}

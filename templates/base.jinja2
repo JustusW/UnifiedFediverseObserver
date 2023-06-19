@@ -1,0 +1,8 @@
+<div id="{{ data.id }}" style="border: 1px solid black">
+    {% block data %}
+        <div id="{{ data.id }}">{{ data.type }}:{{ data.id }}</div>
+    {% endblock %}
+    {% block content %}
+        {{ data.data }}
+    {% endblock %}
+</div>

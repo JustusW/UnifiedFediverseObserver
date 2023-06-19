@@ -18,10 +18,17 @@ class SearchResult:
 class ActivityPubObject:
     @staticmethod
     def makeObject(data):
+        if type(data) is not dict:
+            return data
+
         return {
-            "OrderedCollection": OrderedCollection,
             "Announce": Announce,
+            "Collection": Collection,
+            "Create": Create,
             "Note": Note,
+            "OrderedCollection": OrderedCollection,
+            "OrderedCollectionPage": OrderedCollectionPage,
+            "Person": Person,
         }.get(data["type"], ActivityPubObject)(data)
 
     def __init__(self, data):
@@ -39,18 +46,46 @@ class ActivityPubObject:
             raise AttributeError("Attribute %s not found" % item)
 
     def __str__(self):
-        name = self.__class__.__name__
-        if self.type != name:
-            name += ":%s" % self.type
-        else:
-            name = ":" + name
-        return "%s: %s (%s)\r\n" % (name, self.id, self.data.keys())
+        return render_template('base.jinja2', data=self)
 
     def __repr__(self):
         return self.__str__()
 
 
-class OrderedCollection(ActivityPubObject):
+class Announce(ActivityPubObject):
+    def __str__(self):
+        print(self.data.keys())
+        return render_template('announce.jinja2', data=self)
+
+
+class Collection(ActivityPubObject):
+    def __str__(self):
+        print(self.data.keys())
+        return render_template('collection.jinja2', data=self)
+
+
+class CollectionPage(Collection):
+    def __init__(self, data):
+        super().__init__(data)
+        self.first = self.data["first"]
+        self.last = self.data["last"]
+
+    def __str__(self):
+        print(self.data.keys())
+        return render_template('collectionPage.jinja2', data=self)
+
+
+class Create(ActivityPubObject):
+    def __init__(self, data):
+        super().__init__(data)
+        self.object = ActivityPubObject.makeObject(self.data["object"])
+
+    def __str__(self):
+        print(self.data.keys())
+        return render_template('create.jinja2', data=self)
+
+
+class OrderedCollection(Collection):
     def __init__(self, data):
         super().__init__(data)
         self.children = []
@@ -63,16 +98,23 @@ class OrderedCollection(ActivityPubObject):
         return render_template('orderedCollection.jinja2', data=self)
 
 
+class OrderedCollectionPage(OrderedCollection):
+    def __str__(self):
+        print(self.data.keys())
+        return render_template('orderedCollectionPage.jinja2', data=self)
+
+
+class Person(ActivityPubObject):
+    def __str__(self):
+        print(self.data.keys())
+        return render_template('person.jinja2', data=self)
+
+
 class Note(ActivityPubObject):
     def __init__(self, data):
         super().__init__(data)
+        self.content = self.data["content"]
 
     def __str__(self):
         print(self.data.keys())
         return render_template('note.jinja2', data=self)
-
-
-class Announce(ActivityPubObject):
-    def __str__(self):
-        print(self.data.keys())
-        return render_template('announce.jinja2', data=self)
