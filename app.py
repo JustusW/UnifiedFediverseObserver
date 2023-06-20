@@ -1,6 +1,5 @@
 import os
 import signal
-from pprint import pprint
 
 import webview
 from flask import Flask, render_template
